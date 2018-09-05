@@ -81,13 +81,26 @@ class Population():
         '''Plots the fitness into a scatter graph.  '''
         env = list(map(lambda x: environment, self.fit))
         plt.scatter(env, self.fit, color= self.color)
+
+    def plot_champion_poly(self, min_x, max_x, steps = 0.2):
+        '''Plots the champion polynomial. '''
+        xs = np.arange(-2,2, 0.2)
+        ys = np.zeros([len(xs)])
+        for idx, x in enumerate(xs):
+            for i in range(self.dna_lengh):
+                ys[idx] = ys[idx] + self.genes[self.best][i] * x ** i
+
+        plt.plot(xs,ys, color= self.color)
         
 def main():
     ''' This aims to show why environment matters in evolutionary computing.'''
     
+    dna_length = 5
+    populaiton_size = 100
+
     #Creates two populations to be comparared.
-    population_1 = Population(100, 5, 'red')
-    population_2 = Population(100, 5, 'blue')
+    population_1 = Population(populaiton_size, dna_length, 'red')
+    population_2 = Population(populaiton_size, dna_length, 'blue')
     
     #Loop to optimize the each population to its envinronment.
     n_iterations = 100
@@ -109,10 +122,22 @@ def main():
         population_2.new_generation()
     
     #Print and plot findings by the end of the exercise.
+    print('\n+++ Iteration ', n_iterations, ': +++')
     population_1.print_champion('Polulation 1')
     population_2.print_champion('Polulation 2')
-    print('Fit Score of all individuos of all populations:')
+
+    plt.title('Fit Score of all individuos of all populations:')
     population_1.plot_fit(1)
     population_2.plot_fit(-1)
+    plt.show()
     
-main()
+    #Plot polynomials
+    plt.title('Polynomials of fittest individual:')
+    population_1.plot_champion_poly(-2,2,0.2)
+    population_2.plot_champion_poly(-2,2, 0.2)
+    #Plot fit function
+    plt.plot([-2,2],[5,5])
+    plt.show()
+
+if __name__ == '__main__':
+    main()
