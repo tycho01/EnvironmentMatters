@@ -82,7 +82,7 @@ class Population():
         env = list(map(lambda x: environment, self.fit))
         plt.scatter(env, self.fit, color= self.color)
         
-def example():
+def main():
     ''' This aims to show why environment matters in evolutionary computing.'''
     
     #Creates two populations to be comparared.
@@ -115,4 +115,4 @@ def example():
     population_1.plot_fit(1)
     population_2.plot_fit(-1)
     
-
+main()
